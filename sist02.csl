@@ -53,7 +53,7 @@
   </macro>
   <macro name="author">
     <names variable="author editor">
-      <name delimiter-precedes-et-al="never" delimiter-precedes-last="never" initialize="false" initialize-with=". "/>
+      <name delimiter="; " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all" initialize="false" initialize-with=". "/>
       <label form="short" prefix=", " text-case="capitalize-first"/>
       <substitute>
         <names variable="editor"/>
@@ -70,17 +70,13 @@
   <macro name="locators">
     <group delimiter=", ">
       <text macro="edition"/>
-      <group delimiter=" ">
-        <text term="volume" form="short"/>
+      <group>
         <number variable="volume" form="numeric"/>
+        <number variable="issue" form="numeric" prefix="(" suffix=")"/>
       </group>
       <group delimiter=" ">
         <number variable="number-of-volumes" form="numeric"/>
         <text term="volume" form="short" plural="true"/>
-      </group>
-      <group delimiter=" ">
-        <text term="issue" form="short"/>
-        <number variable="issue" form="numeric"/>
       </group>
     </group>
   </macro>
@@ -134,7 +130,7 @@
   </macro>
   <macro name="access">
     <choose>
-      <if type="webpage">
+      <if type="webpage article-journal" match="any">
         <choose>
           <if variable="URL">
             <group delimiter=", ">
@@ -169,6 +165,8 @@
   <bibliography entry-spacing="0" second-field-align="flush">
     <layout suffix=".">
       <text variable="citation-number" prefix="(" suffix=")"/>
+      <group delimiter=". ">
+      <group>
       <text macro="author" suffix=". "/>
       <choose>
         <if type="article-journal">
@@ -216,7 +214,6 @@
             <text variable="container-title" font-style="italic"/>
             <text macro="issued"/>
           </group>
-          <text macro="access"/>
         </else-if>
         <else-if type="patent">
           <text macro="title" suffix=", "/>
@@ -270,6 +267,9 @@
           </group>
         </else>
       </choose>
+      </group>
+      <text macro="access"/>
+      </group>
     </layout>
   </bibliography>
 </style>
