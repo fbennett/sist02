@@ -42,25 +42,31 @@
     </choose>
   </macro>
   <macro name="issued">
-    <choose>
-      <if type="article-journal report" match="any">
-        <date variable="issued">
-          <date-part name="year" form="long"/>
-        </date>
-      </if>
-      <else-if type=" bill book chapter graphic legal_case legislation motion_picture paper-conference song thesis" match="any">
-        <date variable="issued">
-          <date-part name="year" form="long"/>
-        </date>
-      </else-if>
-      <else>
-        <date variable="issued">
-          <date-part name="day" form="numeric-leading-zeros" suffix="-"/>
-          <date-part name="month" form="short" suffix="-" strip-periods="true"/>
-          <date-part name="year" form="long"/>
-        </date>
-      </else>
-    </choose>
+    <group delimiter=", ">
+      <choose>
+        <if type="article-journal report" match="any">
+          <date variable="issued">
+            <date-part name="year" form="long"/>
+          </date>
+        </if>
+        <else-if type=" bill book chapter graphic legal_case legislation motion_picture paper-conference song thesis" match="any">
+          <date variable="issued">
+            <date-part name="year" form="long"/>
+          </date>
+        </else-if>
+        <else>
+          <date variable="issued">
+            <date-part name="day" form="numeric-leading-zeros" suffix="-"/>
+            <date-part name="month" form="short" suffix="-" strip-periods="true"/>
+            <date-part name="year" form="long"/>
+          </date>
+        </else>
+      </choose>
+      <group>
+        <number variable="number-of-pages"/>
+        <text value="p"/>
+      </group>
+    </group>
   </macro>
   <macro name="author">
     <choose>
@@ -122,10 +128,6 @@
           <group delimiter=": ">
             <text variable="publisher-place"/>
             <text variable="publisher"/>
-          </group>
-          <group delimiter=" ">
-            <label plural="never" variable="page" form="short"/>
-            <number variable="number-of-pages"/>
           </group>
         </group>
       </if>
