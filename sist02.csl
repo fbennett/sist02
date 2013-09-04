@@ -193,6 +193,28 @@
       <number variable="page"/>
     </group>
   </macro>
+  <macro name="book-series">
+    <group delimiter=", " prefix="(" suffix=")">
+      <text variable="collection-title"/>
+      <number variable="collection-number"/>
+    </group>
+  </macro>
+  <macro name="journal-title-with-series">
+    <choose>
+      <if locale="ja zh kr">
+        <group delimiter="：">
+          <text variable="collection-title"/>
+          <text macro="title"/>
+        </group>
+      </if>
+      <else>
+        <group delimiter=": ">
+          <text variable="collection-title"/>
+          <text macro="title"/>
+        </group>
+      </else>
+    </choose>              
+  </macro>
   <citation collapse="citation-number">
     <sort>
       <key variable="citation-number"/>
@@ -209,20 +231,7 @@
           <text macro="author"/>
           <choose>
             <if type="article-journal">
-              <choose>
-                <if locale="ja zh kr">
-                  <group delimiter="：">
-                    <text variable="collection-title"/>
-                    <text macro="title"/>
-                  </group>
-                </if>
-                <else>
-                  <group delimiter=": ">
-                    <text variable="collection-title"/>
-                    <text macro="title"/>
-                  </group>
-                </else>
-              </choose>              
+              <text macro="journal-title-with-series"/>
               <text variable="container-title" form="short" font-style="normal"/>
               <group delimiter=", ">
                 <text macro="issued"/>
@@ -283,6 +292,7 @@
               <group delimiter=", ">
                 <text macro="publisher"/>
                 <text macro="issued"/>
+                <text macro="book-series"/>
                 <text macro="page"/>
               </group>
             </else-if>
@@ -306,6 +316,7 @@
               <group delimiter=", ">
                 <text macro="publisher"/>
                 <text macro="issued"/>
+                <text macro="book-series"/>
                 <text macro="page"/>
               </group>
             </else-if>
