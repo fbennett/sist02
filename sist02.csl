@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only">
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.1mlz1" demote-non-dropping-particle="sort-only" default-locale="en" force-locale-terms-to-default="true">
   <info>
     <title>SIST02</title>
     <title-short>SIST02</title-short>
@@ -24,7 +24,7 @@
             </group>
           </if>
           <else>
-            <text variable="edition" text-case="capitalize-first" suffix="."/>
+            <number variable="edition" text-case="capitalize-first" suffix="."/>
           </else>
         </choose>
       </if>
@@ -52,14 +52,28 @@
     </choose>
   </macro>
   <macro name="author">
-    <names variable="author editor">
-      <name delimiter="; " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all" initialize="false" initialize-with=". "/>
-      <label form="short" prefix=", " text-case="capitalize-first"/>
-      <substitute>
-        <names variable="editor"/>
-        <names variable="translator"/>
-      </substitute>
-    </names>
+    <choose>
+      <if locale="ja zh kr">
+        <names variable="author">
+          <name delimiter=", " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all"/>
+          <label form="short" prefix=", " text-case="capitalize-first"/>
+          <substitute>
+            <names variable="editor"/>
+            <names variable="translator"/>
+          </substitute>
+        </names>
+      </if>
+      <else>
+        <names variable="author">
+          <name delimiter="; " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all" initialize="true" initialize-with=". "/>
+          <label form="short" prefix=", " text-case="capitalize-first"/>
+          <substitute>
+            <names variable="editor"/>
+            <names variable="translator"/>
+          </substitute>
+        </names>
+      </else>
+    </choose>
   </macro>
   <macro name="editor">
     <names variable="editor">
@@ -93,11 +107,15 @@
   <macro name="publisher">
     <choose>
       <if type=" bill book chapter graphic legal_case legislation motion_picture paper-conference song" match="any">
-        <text variable="publisher-place" suffix=": "/>
-        <text variable="publisher"/>
-        <group prefix=", ">
-          <label plural="never" variable="page" form="short"/>
-          <text variable="number-of-pages"/>
+        <group delimiter=", ">
+          <group delimiter=": ">
+            <text variable="publisher-place"/>
+            <text variable="publisher"/>
+          </group>
+          <group delimiter=" ">
+            <label plural="never" variable="page" form="short"/>
+            <number variable="number-of-pages"/>
+          </group>
         </group>
       </if>
       <else>
@@ -149,9 +167,9 @@
     </choose>
   </macro>
   <macro name="page">
-    <group>
-      <label plural="never" suffix=" " variable="page" form="short"/>
-      <text variable="page"/>
+    <group delimiter=" ">
+      <label plural="never" variable="page" form="short"/>
+      <number variable="page"/>
     </group>
   </macro>
   <citation collapse="citation-number">
@@ -166,15 +184,13 @@
     <layout suffix=".">
       <text variable="citation-number" prefix="(" suffix=")"/>
       <group delimiter=". ">
-        <group>
-          <text macro="author" suffix=". "/>
+        <group delimiter=". ">
+          <text macro="author"/>
           <choose>
             <if type="article-journal">
-              <group suffix=". ">
-                <text macro="title"/>
-              </group>
+              <text macro="title"/>
+              <text variable="container-title" form="short" font-style="normal"/>
               <group delimiter=", ">
-                <text variable="container-title" form="short" font-style="normal"/>
                 <text macro="issued"/>
                 <text macro="locators"/>
                 <text macro="page"/>
@@ -209,19 +225,24 @@
               </group>
             </else-if>
             <else-if type="webpage">
-              <group delimiter=", " suffix=". ">
+              <group delimiter=", ">
                 <text macro="title"/>
                 <text variable="container-title" font-style="italic"/>
                 <text macro="issued"/>
               </group>
             </else-if>
             <else-if type="patent">
-              <text macro="title" suffix=", "/>
-              <text variable="number" prefix="U.S. Patent "/>
+              <group delimiter=", ">
+                <text macro="title"/>
+                <group delimiter=" ">
+                  <text value="U.S. Patent"/>
+                  <text variable="number"/>
+                </group>
+              </group>
               <text macro="issued"/>
             </else-if>
             <else-if type="bill book graphic legal_case legislation motion_picture report song" match="any">
-              <group delimiter=", " suffix=". ">
+              <group delimiter=", ">
                 <text macro="title"/>
                 <text macro="locators"/>
               </group>
@@ -242,12 +263,12 @@
               </group>
             </else-if>
             <else-if type="chapter paper-conference" match="any">
-              <group delimiter=", " suffix=", ">
+              <group delimiter=", ">
                 <text macro="title"/>
                 <text variable="container-title" prefix="in " font-style="italic"/>
                 <text macro="locators"/>
               </group>
-              <text macro="editor" suffix=" "/>
+              <text macro="editor"/>
               <group delimiter=", ">
                 <text macro="publisher"/>
                 <text macro="issued"/>
@@ -255,7 +276,7 @@
               </group>
             </else-if>
             <else>
-              <group delimiter=", " suffix=". ">
+              <group delimiter=", ">
                 <text macro="title"/>
                 <text variable="container-title" font-style="italic"/>
                 <text macro="locators"/>
