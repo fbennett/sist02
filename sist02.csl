@@ -131,7 +131,7 @@
       <if locale="ja zh kr">
         <names variable="editor">
           <name delimiter=", " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all"/>
-          <label form="short" prefix=" "/>
+          <label form="short"/>
         </names>
       </if>
       <else>
