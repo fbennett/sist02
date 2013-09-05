@@ -209,7 +209,7 @@
       <if variable="DOI">
         <text variable="DOI" prefix="doi:"/>
       </if>
-      <else-if type="webpage article-journal book chapter" match="any">
+      <else-if type="webpage article-journal book chapter report" match="any">
         <choose>
           <if variable="URL accessed" match="any">
             <group delimiter=", ">
@@ -288,6 +288,9 @@
       </else>
     </choose>              
   </macro>
+  <macro name="institution">
+    <names variable="authority"/>
+  </macro>
   <macro name="biblio">
       <group delimiter=". ">
         <group delimiter=". ">
@@ -312,8 +315,17 @@
               </group>
             </else-if>
             <else-if type="report">
-              <text macro="title"/>
+              <choose>
+                <if variable="container-title">
+                  <text macro="title" quotes="true"/>
+                  <text variable="container-title"/>
+                </if>
+                <else>
+                  <text macro="title"/>
+                </else>
+              </choose>
               <group delimiter=", ">
+                <text macro="institution"/>
                 <text macro="publisher"/>
                 <group delimiter=" ">
                   <choose>
@@ -328,6 +340,11 @@
                   </choose>
                 </group>
                 <text macro="issued"/>
+                <choose>
+                  <if variable="genre" match="none">
+                    <text variable="number"/>
+                  </if>
+                </choose>
                 <text macro="report-number-of-pages"/>
                 <text macro="book-series"/>
               </group>
@@ -417,7 +434,7 @@
       <text variable="citation-number"/>
     </layout>
   </citation>
-  <bibliography entry-spacing="0" second-field-align="flush">
+  <bibliography entry-spacing="0" second-field-align="flush" et-al-min="3" et-al-use-first="1">
     <layout suffix="." locale="en">
       <text variable="citation-number" prefix="(" suffix=")"/>
       <text macro="biblio"/>
