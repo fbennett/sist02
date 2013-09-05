@@ -13,6 +13,15 @@
     <updated>2012-12-09T09:04:04+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
+  <locale>
+    <terms>
+      <term name="page" form="short">p.</term>
+      <term name="open-quote">“</term>
+      <term name="close-quote">”</term>
+      <term name="open-inner-quote">‘</term>
+      <term name="close-inner-quote">’</term>
+    </terms>
+  </locale>
   <locale xml:lang="ja">
     <terms>
       <term name="editor" form="short">編</term>
@@ -118,10 +127,20 @@
     </choose>
   </macro>
   <macro name="editor">
-    <names variable="editor">
-      <name initialize-with=". " delimiter=", " and="text"/>
-      <label form="short" prefix=", " text-case="capitalize-first"/>
-    </names>
+    <choose>
+      <if locale="ja zh kr">
+        <names variable="editor">
+          <name delimiter=", " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all"/>
+          <label form="short" prefix=" "/>
+        </names>
+      </if>
+      <else>
+        <names variable="editor">
+          <name delimiter="; " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all" initialize="true" initialize-with=". "/>
+          <label form="short" prefix=" "/>
+        </names>
+      </else>
+    </choose>
   </macro>
   <macro name="locators">
     <group delimiter=", ">
@@ -269,17 +288,7 @@
       </else>
     </choose>              
   </macro>
-  <citation collapse="citation-number">
-    <sort>
-      <key variable="citation-number"/>
-    </sort>
-    <layout delimiter=", ">
-      <text variable="citation-number"/>
-    </layout>
-  </citation>
-  <bibliography entry-spacing="0" second-field-align="flush">
-    <layout suffix=".">
-      <text variable="citation-number" prefix="(" suffix=")"/>
+  <macro name="biblio">
       <group delimiter=". ">
         <group delimiter=". ">
           <text macro="author"/>
@@ -372,11 +381,9 @@
               </group>
             </else-if>
             <else-if type="chapter paper-conference" match="any">
-              <group delimiter=", ">
-                <text macro="title"/>
-                <text variable="container-title" prefix="in " font-style="italic"/>
-                <text macro="locators"/>
-              </group>
+              <text macro="title" quotes="true"/>
+              <text variable="container-title"/>
+              <text macro="locators"/>
               <text macro="editor"/>
               <group delimiter=", ">
                 <text macro="publisher"/>
@@ -401,6 +408,23 @@
         </group>
         <text macro="access"/>
       </group>
+  </macro>
+  <citation collapse="citation-number">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout delimiter=", ">
+      <text variable="citation-number"/>
+    </layout>
+  </citation>
+  <bibliography entry-spacing="0" second-field-align="flush">
+    <layout suffix="." locale="en">
+      <text variable="citation-number" prefix="(" suffix=")"/>
+      <text macro="biblio"/>
+    </layout>
+    <layout suffix=".">
+      <text variable="citation-number" prefix="(" suffix=")"/>
+      <text macro="biblio"/>
     </layout>
   </bibliography>
 </style>
