@@ -365,8 +365,8 @@
               <group delimiter=", ">
                 <text macro="publisher"/>
                 <text macro="issued"/>
-                <text macro="book-series"/>
                 <text macro="page"/>
+                <text macro="book-series"/>
               </group>
               <text variable="medium" prefix="(" suffix=")"/>
             </else-if>
@@ -388,8 +388,8 @@
               <group delimiter=", ">
                 <text macro="publisher"/>
                 <text macro="issued"/>
-                <text macro="book-series"/>
                 <text macro="page"/>
+                <text macro="book-series"/>
               </group>
             </else-if>
             <else>
