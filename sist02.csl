@@ -102,7 +102,11 @@
   </macro>
   <macro name="author">
     <choose>
-      <if locale="ja zh kr">
+      <if>
+        <conditions match="all">
+          <condition locale="ja zh kr"/>
+          <condition type="paper-conference" match="none"/>
+        </conditions> 
         <names variable="author">
           <name delimiter=", " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all"/>
           <label form="short"/>
@@ -113,7 +117,7 @@
           </substitute>
         </names>
       </if>
-      <else>
+      <else-if type="paper-conference" match="none">
         <names variable="author">
           <name delimiter="; " delimiter-precedes-et-al="never" delimiter-precedes-last="never" name-as-sort-order="all" initialize="true" initialize-with=". "/>
           <label form="short" prefix=", " text-case="capitalize-first"/>
@@ -123,7 +127,7 @@
             <names variable="authority"/>
           </substitute>
         </names>
-      </else>
+      </else-if>
     </choose>
   </macro>
   <macro name="editor">
@@ -187,20 +191,19 @@
   <macro name="event">
     <choose>
       <if type="paper-conference">
-        <choose>
-          <if variable="container-title">
-            <group delimiter=", ">
+        <group delimiter=", ">
+          <choose>
+            <if variable="container-title">
               <text variable="container-title" prefix="in " font-style="italic"/>
               <text variable="event-place"/>
-            </group>
-          </if>
-          <else>
-            <group delimiter=", ">
+            </if>
+            <else>
               <text variable="event" prefix="presented at the "/>
               <text variable="event-place"/>
-            </group>
-          </else>
-        </choose>
+            </else>
+          </choose>
+          <date form="numeric" variable="event-date" date-parts="year-month-day"/>
+        </group>
       </if>
     </choose>
   </macro>
@@ -209,7 +212,7 @@
       <if variable="DOI">
         <text variable="DOI" prefix="doi:"/>
       </if>
-      <else-if type="webpage article-journal book chapter report" match="any">
+      <else-if type="webpage article-journal book chapter report thesis" match="any">
         <choose>
           <if variable="URL accessed" match="any">
             <group delimiter=", ">
@@ -306,9 +309,12 @@
               </group>
             </if>
             <else-if type="paper-conference">
+              <text macro="title"/>
+              <text macro="container-title"/>
+              <text macro="editor"/>
+              <text macro="event"/>
               <group delimiter=", ">
-                <text macro="title"/>
-                <text macro="event"/>
+                <text variable="publisher"/>
                 <text macro="issued"/>
                 <text macro="locators"/>
                 <text macro="page"/>
@@ -350,11 +356,11 @@
               </group>
             </else-if>
             <else-if type="thesis">
+              <text macro="title"/>
               <group delimiter=", ">
-                <text macro="title"/>
-                <text variable="genre"/>
                 <text macro="publisher"/>
                 <text macro="issued"/>
+                <text variable="genre"/>
               </group>
             </else-if>
             <else-if type="webpage">
