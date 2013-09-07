@@ -3,8 +3,12 @@
   <info>
     <title>SIST02</title>
     <title-short>SIST02</title-short>
-    <id>http://csl.mendeley.com/styles/1385341/SIST02</id>
+    <id>http://citationstylist.org/styles/mlz-sist02</id>
     <link href="http://sti.jst.go.jp/sist/handbook/sist02_2007/main.htm" rel="documentation"/>
+    <author>
+      <name>Frank Bennett</name>
+      <email>bennett@law.nagoya-u.ac.jp</email>
+    </author>
     <contributor>
       <name>Eriko Amano</name>
       <uri>http://www.mendeley.com/profiles/eriko-amano/</uri>
